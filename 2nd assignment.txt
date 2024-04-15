@@ -1,0 +1,51 @@
+SELECT Customer.customer_id, Customer.age, Items.item_name, SUM(Orders.quantity) as total_quantity
+FROM Customer
+JOIN Sales ON Customer.customer_id = Sales.customer_id
+JOIN Orders ON Sales.sales_id = Orders.sales_id
+JOIN Items ON Orders.item_id = Items.item_id
+WHERE Customer.age BETWEEN 18 AND 35
+GROUP BY Customer.customer_id, Items.item_id
+HAVING SUM(Orders.quantity) > 0;
+
+
+import sqlite3
+import pandas as pd
+
+# SQL Solution
+conn = sqlite3.connect('path_to_database.db')
+query = SELECT Customer.customer_id, Customer.age, Items.item_name, SUM(Orders.quantity) as total_quantity
+FROM Customer
+JOIN Sales ON Customer.customer_id = Sales.customer_id
+JOIN Orders ON Sales.sales_id = Orders.sales_id
+JOIN Items ON Orders.item_id = Items.item_id
+WHERE Customer.age BETWEEN 18 AND 35
+GROUP BY Customer.customer_id, Items.item_id
+HAVING SUM(Orders.quantity) > 0;
+
+result_sql = pd.read_sql_query(query, conn)
+result_sql.to_csv('result_sql.csv', sep=';', index=False)
+
+
+# Read tables into pandas dataframes
+df_sales = pd.read_sql_query('SELECT * FROM Sales', conn)
+df_orders = pd.read_sql_query('SELECT * FROM Orders', conn)
+df_items = pd.read_sql_query('SELECT * FROM Items', conn)
+df_customers = pd.read_sql_query('SELECT * FROM Customer', conn)
+
+
+# Save to CSV
+result_pandas.to_csv('result_pandas.csv', sep=';', index=False)
+
+conn.close()
+
+
+
+
+
+
+
+
+
+
+
+
